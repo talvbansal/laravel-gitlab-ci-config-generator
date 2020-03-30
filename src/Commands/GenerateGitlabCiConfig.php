@@ -34,6 +34,8 @@ class GenerateGitlabCiConfig extends Command
 
     public function __construct(GitlabCiConfig $configGenerator)
     {
+        parent::__construct();
+
         $this->configGenerator = $configGenerator;
     }
 
@@ -78,32 +80,16 @@ class GenerateGitlabCiConfig extends Command
 
     private function confirmConfigItems() : self
     {
-        $this->comment(sprintf('PHP Version: %s', $this->phpVersion));
-
-        if ($this->jsDependencies === 'No') {
-            $this->comment('No JS handling required');
-        } else {
-            $this->comment(sprintf('JS assets handled with %s', $this->jsDependencies));
-
-            if ($this->eslint === 'Yes') {
-                $this->comment(sprintf('Build an eslint config'));
-            }
-
-            if ($this->compileAssets === 'Yes') {
-                $this->comment(sprintf('Use Laravel Mix to build frontend assets'));
-            }
-        }
-
-        if ($this->phpCsFixer === 'Yes') {
-            // check if rules already exists so we dont overwrite it
-            $this->comment('Using FriendsOfPHP/PHP-CS-Fixer with laravel shift rules');
-        }
-        if ($this->laraStan === 'Yes') {
-            $this->comment('Using nunomaduro/larastan for static analysis');
-        }
-        if ($this->phpunit === 'Yes') {
-            $this->comment('Build config for phpunit tests');
-        }
+        $this->table(['Item', 'Value'], [
+            ['PHP Version', $this->phpVersion],
+            ['Frontend asset handling managed', $this->jsDependencies],
+            ['Generate Eslint config', $this->eslint],
+            ['Check .js and .vue files with', $this->eslint],
+            ['Compile frontend assets with laravel-mix', $this->compileAssets],
+            ['Check code style rules with PHP-CS-Fixer', $this->phpCsFixer],
+            ['Perform Static analysis with Larastan', $this->laraStan],
+            ['Run PHPUnit tests', $this->phpunit]
+        ]);
 
         return $this;
     }
@@ -140,7 +126,7 @@ class GenerateGitlabCiConfig extends Command
 
     private function copyStub(string $name): void
     {
-        $response = copy(__DIR__.'/stubs/'.$name, base_path($name));
+        $response = copy(__DIR__.'/../stubs/'.$name, base_path($name));
         if ($response) {
             $this->info(sprintf('%s config file created', $name));
         } else {
@@ -188,6 +174,7 @@ class GenerateGitlabCiConfig extends Command
                 'jsDependencies' => $this->jsDependencies,
                 'eslint' => $this->eslint,
                 'compileAssets' => $this->compileAssets,
+
                 'phpCsFixer' => $this->phpCsFixer,
                 'laraStan' => $this->laraStan,
                 'phpunit' => $this->phpunit,

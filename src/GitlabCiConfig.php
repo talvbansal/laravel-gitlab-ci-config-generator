@@ -18,6 +18,8 @@ class GitlabCiConfig
 
     public function setConfig(array $config = []): self{
         $this->config = $config;
+
+        return $this;
     }
 
     private function dockerImage() : string

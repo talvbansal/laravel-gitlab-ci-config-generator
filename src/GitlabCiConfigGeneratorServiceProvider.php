@@ -13,8 +13,10 @@ class GitlabCiConfigGeneratorServiceProvider extends ServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
+            $this->app->bind('command.gitlab-ci:generate', GenerateGitlabCiConfig::class);
+
             $this->commands([
-                GenerateGitlabCiConfig::class
+                'command.gitlab-ci:generate',
             ]);
         }
     }
