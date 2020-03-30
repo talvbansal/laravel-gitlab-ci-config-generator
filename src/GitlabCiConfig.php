@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Talvbansal\GitlabCiConfigGenerator;
-
 
 class GitlabCiConfig
 {
@@ -10,13 +8,15 @@ class GitlabCiConfig
 
     private $config = [];
 
-    public function setPhpVersion(string $version): self{
+    public function setPhpVersion(string $version): self
+    {
         $this->version = $version;
 
         return $this;
     }
 
-    public function setConfig(array $config = []): self{
+    public function setConfig(array $config = []): self
+    {
         $this->config = $config;
 
         return $this;
@@ -27,7 +27,8 @@ class GitlabCiConfig
         return sprintf('edbizarro/gitlab-ci-pipeline-php:%s', $this->version);
     }
 
-    private function stages(): array{
+    private function stages(): array
+    {
         return [
             'preparation',
             'building',
@@ -37,8 +38,8 @@ class GitlabCiConfig
         ];
     }
 
-    public function generate(){
-
+    public function generate()
+    {
         $core = collect([
             'image' => $this->dockerImage(),
             'stages' => $this->stages(),
@@ -261,7 +262,7 @@ class GitlabCiConfig
             ];
         }
 
-        if(empty($testing)){
+        if (empty($testing)) {
             return;
         }
 
@@ -282,6 +283,7 @@ class GitlabCiConfig
   sudo docker-php-ext-enable yaml
   ';
         $yaml = str_replace('placeholder: placeholder', $installExtYaml, $yaml);
+
         return $yaml;
     }
 }

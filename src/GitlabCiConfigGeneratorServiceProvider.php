@@ -26,6 +26,5 @@ class GitlabCiConfigGeneratorServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
     }
 }

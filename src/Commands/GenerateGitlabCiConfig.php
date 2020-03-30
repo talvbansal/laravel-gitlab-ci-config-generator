@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Talvbansal\GitlabCiConfigGenerator\Commands;
-
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
@@ -39,7 +37,8 @@ class GenerateGitlabCiConfig extends Command
         $this->configGenerator = $configGenerator;
     }
 
-    public function handle(){
+    public function handle()
+    {
         if (! extension_loaded('yaml')) {
             $this->error('The php yaml extension is not enabled. Please install it and re-run this command.');
 
@@ -49,7 +48,6 @@ class GenerateGitlabCiConfig extends Command
         $this->collectConfigItems()
             ->confirmConfigItems();
 
-
         while (! $this->confirm('Is the build configuration correct?')) {
             $this->collectConfigItems()
                 ->confirmConfigItems();
@@ -57,7 +55,6 @@ class GenerateGitlabCiConfig extends Command
 
         $this->installDependencies()
             ->buildConfig();
-
     }
 
     private function collectConfigItems() : self
@@ -88,7 +85,7 @@ class GenerateGitlabCiConfig extends Command
             ['Compile frontend assets with laravel-mix', $this->compileAssets],
             ['Check code style rules with PHP-CS-Fixer', $this->phpCsFixer],
             ['Perform Static analysis with Larastan', $this->laraStan],
-            ['Run PHPUnit tests', $this->phpunit]
+            ['Run PHPUnit tests', $this->phpunit],
         ]);
 
         return $this;
