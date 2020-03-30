@@ -45,12 +45,30 @@ class GenerateGitlabCiConfig extends Command
             return false;
         }
 
+        if ($this->doesFileExist('.gitlab-ci.yml')) {
+            if (! $this->confirm('A .gitlab-ci.yml already exists. Running this command will overwrite it are you sure you want to continue?')) {
+                return false;
+            }
+        }
+
         $this->collectConfigItems()
             ->confirmConfigItems();
 
         while (! $this->confirm('Is the build configuration correct?')) {
             $this->collectConfigItems()
                 ->confirmConfigItems();
+        }
+
+        if ($this->eslint === 'Yes' && $this->doesFileExist('.eslintrc.json')) {
+            if (! $this->confirm('A .eslintrc.json already exists. Running this command will overwrite it are you sure you want to continue?')) {
+                return false;
+            }
+        }
+
+        if ($this->laraStan === 'Yes' && $this->doesFileExist('phpstan.neon')) {
+            if (! $this->confirm('A phpstan.neon already exists. Running this command will overwrite it are you sure you want to continue?')) {
+                return false;
+            }
         }
 
         $this->installDependencies()
@@ -153,15 +171,9 @@ class GenerateGitlabCiConfig extends Command
         shell_exec(sprintf('composer require %s --dev', $package));
     }
 
-    private function doesFileExist($file) : bool
+    private function doesFileExist(string $file) : bool
     {
-        if (file_exists(base_path($file))) {
-            $this->error(sprintf('The file ./%s already exists', $file));
-
-            return true;
-        }
-
-        return false;
+        return file_exists(base_path($file));
     }
 
     private function buildConfig() : self
