@@ -4,7 +4,9 @@
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/talvbansal/laravel-gitlab-ci-config-generator/run-tests?label=tests)](https://github.com/talvbansal/laravel-gitlab-ci-config-generator/actions?query=workflow%3Arun-tests+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/talvbansal/laravel-gitlab-ci-config-generator.svg?style=flat-square)](https://packagist.org/packages/talvbansal/laravel-gitlab-ci-config-generator)
 
-This is where your description should go. Try and limit it to a paragraph or two. Consider adding a small example.
+A package to generate a gitlab ci config as well as pulling in dependencies for some sane default pipelines.
+
+More information about what this sets up for you can be found [here](https://www.talvbansal.me/blog/in-depth-gitlab-ci-cd-with-laravel-apps/)
 
 ## Installation
 
