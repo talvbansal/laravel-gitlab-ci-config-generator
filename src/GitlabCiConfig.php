@@ -239,15 +239,19 @@ class GitlabCiConfig
                     'sudo cp /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.bak',
                     'echo "" | sudo tee /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini',
                     './vendor/phpunit/phpunit/phpunit --version',
-                    'php -d short_open_tag=off ./vendor/phpunit/phpunit/phpunit -v --colors=never --stderr --exclude-group integration',
+                    'php -d short_open_tag=off ./vendor/phpunit/phpunit/phpunit -v --colors=never --stderr --exclude-group integration --log-junit=tests.xml',
                     'sudo cp /usr/local/etc/php/conf.d/docker-php-ext-xdebug.bak /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini',
                 ],
                 'artifacts' => [
                     'paths' => [
                         './storage/logs',
+                        './tests.xml',
                     ],
                     'expire_in' => '1 days',
                     'when' => 'on_failure',
+                    'reports' => [
+                        'junit' => './tests.xml'
+                    ],
                 ],
             ];
         }
