@@ -77,8 +77,9 @@ class GitlabCiConfig
                 ],
                 'script' => [
                     'php -v',
-                    'composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts --no-suggest',
+                    'sudo composer self-update --2',
                     'cp .env.example .env',
+                    'composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts --no-suggest',
                     'php artisan key:generate',
                 ],
                 'artifacts' => [
@@ -109,7 +110,7 @@ class GitlabCiConfig
             $install = 'yarn install --pure-lockfile';
         } else {
             $packageManager = 'npm';
-            $install = 'npm install --no-save';
+            $install = 'npm ci';
         }
 
         $js = [
