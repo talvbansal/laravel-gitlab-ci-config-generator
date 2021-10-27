@@ -77,7 +77,7 @@ class GenerateGitlabCiConfig extends Command
 
     private function collectConfigItems() : self
     {
-        $this->phpVersion = $this->choice('Which php version should we target?', ['8.0', '7.4', '7.3', '7.2'], 0);
+        $this->phpVersion = $this->choice('Which php version should we target?', ['8.1', '8.0', '7.4', '7.3', '7.2'], 0);
 
         $this->jsDependencies = $this->choice('Does your project have js dependencies', ['Yarn', 'Npm', 'No'], 0);
         if ($this->jsDependencies !== 'No') {
