@@ -9,17 +9,21 @@ use Talvbansal\GitlabCiConfigGenerator\GitlabCiConfig;
 class GenerateGitlabCiConfig extends Command
 {
     protected $signature = 'gitlab-ci:generate';
+
     protected $description = 'Generate a gitlab ci/cd config file';
 
     private $phpVersion = '8.0';
 
     // js..
     private $jsDependencies = 'No';
+
     private $eslint = 'No';
+
     private $compileAssets = 'No';
 
     // syntax...
     private $phpCsFixer = 'No';
+
     private $laraStan = 'No';
 
     // testing...

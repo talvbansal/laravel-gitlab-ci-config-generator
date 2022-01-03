@@ -251,7 +251,7 @@ class GitlabCiConfig
                     'expire_in' => '1 days',
                     'when' => 'on_failure',
                     'reports' => [
-                        'junit' => './tests.xml'
+                        'junit' => './tests.xml',
                     ],
                 ],
             ];
