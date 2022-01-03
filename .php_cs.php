@@ -148,14 +148,7 @@ $rules = [
 ];
 
 $finder = Finder::create()
-    ->in([
-        'app',
-        'config',
-        'database',
-        'resources',
-        'routes',
-        'tests',
-    ])
+    ->in(getcwd())
     ->name('*.php')
     ->notName('*.blade.php')
     ->ignoreDotFiles(true)
