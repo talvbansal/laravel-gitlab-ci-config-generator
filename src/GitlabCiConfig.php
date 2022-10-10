@@ -200,7 +200,7 @@ class GitlabCiConfig
 
     private function syntaxConfig()
     {
-        return match($this->config['phpLint']) {
+        return match ($this->config['phpLint']) {
             'php-cs-fixer' => [
                 'php-cs-fixer' => [
                     'stage' => 'syntax',

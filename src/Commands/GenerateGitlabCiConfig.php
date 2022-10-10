@@ -23,6 +23,7 @@ class GenerateGitlabCiConfig extends Command
 
     // syntax...
     private $shouldLintPhpCode = 'No';
+
     private $phpLinter = 'No';
 
     private $laraStan = 'No';
@@ -92,7 +93,7 @@ class GenerateGitlabCiConfig extends Command
         }
 
         $this->shouldLintPhpCode = $this->choice('Lint your php code', ['Yes', 'No'], 0);
-        if($this->shouldLintPhpCode === 'Yes') {
+        if ($this->shouldLintPhpCode === 'Yes') {
             $this->phpLinter = $this->choice('Use laravel pint or FriendsOfPHP/PHP-CS-Fixer with Laravel Shift\'s rules', ['laravel-pint', 'php-cs-fixer'], 0);
         }
         $this->laraStan = $this->choice('Use nunomaduro/larastan for static analysis', ['Yes', 'No'], 0);
@@ -130,7 +131,7 @@ class GenerateGitlabCiConfig extends Command
             } else {
                 file_put_contents(base_path('.php_cs.php'), $response->body());
             }
-        } else if($this->phpLinter === 'laravel-pint') {
+        } elseif ($this->phpLinter === 'laravel-pint') {
             $this->composerInstall('laravel/pint');
         }
 
