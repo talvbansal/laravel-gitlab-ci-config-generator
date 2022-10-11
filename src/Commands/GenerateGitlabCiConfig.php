@@ -22,7 +22,9 @@ class GenerateGitlabCiConfig extends Command
     private $compileAssets = 'No';
 
     // syntax...
-    private $phpCsFixer = 'No';
+    private $shouldLintPhpCode = 'No';
+
+    private $phpLinter = 'No';
 
     private $laraStan = 'No';
 
@@ -85,12 +87,15 @@ class GenerateGitlabCiConfig extends Command
 
         $this->jsDependencies = $this->choice('Does your project have js dependencies', ['Yarn', 'Npm', 'No'], 0);
         if ($this->jsDependencies !== 'No') {
-            // check if eslint file exists and dont overwrite it
+            // check if eslint file exists and do not overwrite it
             $this->eslint = $this->choice('Create default ES Lint file', ['Yes', 'No'], 0);
             $this->compileAssets = $this->choice('Compile front end assets', ['Yes', 'No'], 0);
         }
 
-        $this->phpCsFixer = $this->choice('Use laravel shift\'s FriendsOfPHP/PHP-CS-Fixer rules', ['Yes', 'No'], 0);
+        $this->shouldLintPhpCode = $this->choice('Lint your php code', ['Yes', 'No'], 0);
+        if ($this->shouldLintPhpCode === 'Yes') {
+            $this->phpLinter = $this->choice('Use laravel pint or FriendsOfPHP/PHP-CS-Fixer with Laravel Shift\'s rules', ['laravel-pint', 'php-cs-fixer'], 0);
+        }
         $this->laraStan = $this->choice('Use nunomaduro/larastan for static analysis', ['Yes', 'No'], 0);
         $this->phpunit = $this->choice('Run phpunit tests', ['Yes', 'No'], 0);
 
@@ -105,7 +110,7 @@ class GenerateGitlabCiConfig extends Command
             ['Generate Eslint config', $this->eslint],
             ['Check .js and .vue files with', $this->eslint],
             ['Compile frontend assets with laravel-mix', $this->compileAssets],
-            ['Check code style rules with PHP-CS-Fixer', $this->phpCsFixer],
+            ['PHP Linter', $this->phpLinter],
             ['Perform Static analysis with Larastan', $this->laraStan],
             ['Run PHPUnit tests', $this->phpunit],
         ]);
@@ -116,7 +121,7 @@ class GenerateGitlabCiConfig extends Command
     private function installDependencies() : self
     {
         $this->info('Installing dependencies...');
-        if ($this->phpCsFixer === 'Yes') {
+        if ($this->phpLinter === 'php-cs-fixer') {
             $this->composerInstall('friendsofphp/php-cs-fixer');
 
             $response = Http::get('https://gist.githubusercontent.com/laravel-shift/cab527923ed2a109dda047b97d53c200/raw/7108d407ce7feabf22730ee21332bb3f5dd49772/.php_cs.laravel.php');
@@ -126,6 +131,8 @@ class GenerateGitlabCiConfig extends Command
             } else {
                 file_put_contents(base_path('.php_cs.php'), $response->body());
             }
+        } elseif ($this->phpLinter === 'laravel-pint') {
+            $this->composerInstall('laravel/pint');
         }
 
         if ($this->laraStan === 'Yes') {
@@ -188,7 +195,7 @@ class GenerateGitlabCiConfig extends Command
                 'eslint' => $this->eslint,
                 'compileAssets' => $this->compileAssets,
 
-                'phpCsFixer' => $this->phpCsFixer,
+                'phpLint' => $this->phpLinter,
                 'laraStan' => $this->laraStan,
                 'phpunit' => $this->phpunit,
             ])

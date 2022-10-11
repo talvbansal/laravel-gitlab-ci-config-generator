@@ -200,21 +200,31 @@ class GitlabCiConfig
 
     private function syntaxConfig()
     {
-        if ($this->config['phpCsFixer'] === 'No') {
-            return;
-        }
-
-        return [
+        return match ($this->config['phpLint']) {
             'php-cs-fixer' => [
-                'stage' => 'syntax',
-                'dependencies' => [
-                    'composer',
-                ],
-                'script' => [
-                    './vendor/bin/php-cs-fixer fix --config=.php_cs.php --verbose --diff --dry-run',
+                'php-cs-fixer' => [
+                    'stage' => 'syntax',
+                    'dependencies' => [
+                        'composer',
+                    ],
+                    'script' => [
+                        './vendor/bin/php-cs-fixer fix --config=.php_cs.php --verbose --diff --dry-run',
+                    ],
                 ],
             ],
-        ];
+            'laravel-pint' => [
+                'laravel-pint' => [
+                    'stage' => 'syntax',
+                    'dependencies' => [
+                        'composer',
+                    ],
+                    'script' => [
+                        './vendor/bin/pint --test',
+                    ],
+                ],
+            ],
+            default => [],
+        };
     }
 
     public function testingConfig()

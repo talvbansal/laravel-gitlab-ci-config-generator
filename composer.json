@@ -16,13 +16,13 @@
         }
     ],
     "require": {
-        "php": "^8.0|^7.2"
+        "php": "^8.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
-        "symfony/var-dumper": "^5.0",
-        "orchestra/testbench": "^5.0",
-        "phpunit/phpunit": "^9.0"
+        "symfony/var-dumper": "*",
+        "orchestra/testbench": "*",
+        "phpunit/phpunit": "*"
     },
     "autoload": {
         "psr-4": {
