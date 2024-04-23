@@ -96,7 +96,7 @@ class GenerateGitlabCiConfig extends Command
         if ($this->shouldLintPhpCode === 'Yes') {
             $this->phpLinter = $this->choice('Use laravel pint or FriendsOfPHP/PHP-CS-Fixer with Laravel Shift\'s rules', ['laravel-pint', 'php-cs-fixer'], 0);
         }
-        $this->laraStan = $this->choice('Use nunomaduro/larastan for static analysis', ['Yes', 'No'], 0);
+        $this->laraStan = $this->choice('Use larastan/larastan for static analysis', ['Yes', 'No'], 0);
         $this->phpunit = $this->choice('Run phpunit tests', ['Yes', 'No'], 0);
 
         return $this;
@@ -136,7 +136,7 @@ class GenerateGitlabCiConfig extends Command
         }
 
         if ($this->laraStan === 'Yes') {
-            $this->composerInstall('nunomaduro/larastan --dev');
+            $this->composerInstall('larastan/larastan --dev');
             $this->copyStub('phpstan.neon');
         }
 
